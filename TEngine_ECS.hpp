@@ -601,13 +601,15 @@ namespace DEMO {
             }
         }
 
-        static void testFunction() {
-            std::cout << "Test function called" << std::endl;
+        void testFunction() {
+            std::cout << "Test function called. testInt = " << testInt << std::endl;
         }
 
-        bool TestCondition() {
+        static bool testCondition() {
             return true;
         }
+    private:
+        int testInt = -5;
     };
 
     class TagTestSystem : public ECS::System {
@@ -630,14 +632,14 @@ namespace DEMO {
         context.registerComponentType<HealthComponent>();
         context.registerComponentType<Tag<"TagTest"_hs>>();
 
-        const auto movementSystem = std::make_shared<MovementSystem>(context);
-        const auto renderSystem = std::make_shared<RenderSystem>(context);
-        const auto testSystem = std::make_shared<TestSystem>(context);
-        const auto tagTestSystem = std::make_shared<TagTestSystem>(context);
+        auto movementSystem = std::make_shared<MovementSystem>(context);
+        auto renderSystem = std::make_shared<RenderSystem>(context);
+        auto testSystem = std::make_shared<TestSystem>(context);
+        auto tagTestSystem = std::make_shared<TagTestSystem>(context);
 
-        auto entity1 = HELPER::createEntityWithComponents(context, PositionComponent{5, 5}, VelocityComponent{1, 1}, HealthComponent{100}, Tag<"TagTest"_hs>{});
-        auto entity2 = HELPER::createEntityWithComponents(context, PositionComponent{2.5, 2.5}, VelocityComponent{-0.5, -0.5}, HealthComponent{50});
-        auto entity3 = HELPER::createEntityWithComponents(context, PositionComponent{0, 0}, HealthComponent{75});
+        const auto entity1 = HELPER::createEntityWithComponents(context, PositionComponent{5, 5}, VelocityComponent{1, 1}, HealthComponent{100}, Tag<"TagTest"_hs>{});
+        const auto entity2 = HELPER::createEntityWithComponents(context, PositionComponent{2.5, 2.5}, VelocityComponent{-0.5, -0.5}, HealthComponent{50});
+        const auto entity3 = HELPER::createEntityWithComponents(context, PositionComponent{0, 0}, HealthComponent{75});
 
         context.addSystem(movementSystem, 0);
         context.addSystem(renderSystem, 0);
@@ -655,7 +657,7 @@ namespace DEMO {
             std::cout << "Alternate handler for Event 1" << std::endl;
         });
 
-        context.addEvent(2, [&testSystem] { return testSystem->TestCondition(); });
+        context.addEvent(2, [&testSystem] { return testSystem->testCondition(); });
 
         context.addEventHandler(2, [] {
             std::cout << "Event 2 triggered by TestSystem test condition" << std::endl;
