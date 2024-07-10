@@ -98,7 +98,6 @@ public:
     explicit TestSystem(ECS::Context& context) : System(context, HELPER::createSignature<PositionComponent, VelocityComponent>(context)) {}
 
     void update() override {
-        std::cout << "This test system on pipeline 1 will run after Movement System and Render System" << std::endl;
         for (const auto& entityId : m_Entities) {
             const auto& position = m_Context.getComponent<PositionComponent>(entityId); // taking a const reference since we are not changing the components
             const auto& velocity = m_Context.getComponent<VelocityComponent>(entityId);
@@ -110,7 +109,7 @@ public:
         std::cout << "Test function called" << std::endl;
     }
 
-    bool TestCondition() {
+    static bool testCondition() {
         return true;
     }
 };
