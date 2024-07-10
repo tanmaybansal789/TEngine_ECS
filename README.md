@@ -133,9 +133,54 @@ Then to update all the systems:
 context.update();
 ```
 
-Currently, we cannot pass any value into system's update functions, so they have no idea how long it has been. 
-To fix this, you might want to create a global variable which stores the dt and just use that, or perform some simple modification to the ECS code,
-or have the context update in a fixedUpdate thread.
+Here is another example of how systems can be used:
+
+```cpp
+struct HealthComponent {
+    int health;
+    friend std::ostream& operator<<(std::ostream& os, const HealthComponent& health) {
+        os << "Health: " << health.health;
+        return os;
+    }
+    friend std::istream& operator>>(std::istream& is, HealthComponent& health) {
+        // Extracts from "Health: <health>"
+        is.ignore(std::numeric_limits<std::streamsize>::max(), ' ');
+        is >> health.health;
+        return is;
+    }
+};
+
+context.registerComponent<HealthComponent>();
+
+class RenderSystem : public ECS::System {
+public:
+    int dt;
+    
+    explicit RenderSystem(ECS::Context& context) : System(context, HELPER::createSignature<PositionComponent, HealthComponent>(context)) {}
+
+    void update() override {
+        for (const auto& entityId : m_Entities) {
+            const auto& position = m_Context.getComponent<PositionComponent>(entityId);
+            const auto& health = m_Context.getComponent<HealthComponent>(entityId);
+            std::cout << "Entity " << entityId << " at " << position << " with " << health << std::endl;
+            std::cout << "dt: " << dt << std::endl;
+            // not very realistic rendering :)
+        }
+    }
+};
+
+auto renderSystem = std::make_shared<RenderSystem>(context);
+
+for (auto i = 0; i < 5; ++i)
+{
+    currentDt = 100 // you would calculate the actual value - just for example
+    renderSystem->dt = currentDt;
+    context.update()
+}
+
+```
+
+As you can see, beyond running the system's update functions, doing other stuff with the system is on the user (except for events - explained later).
 
 # Advanced features
 coming soon
