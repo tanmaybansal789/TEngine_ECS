@@ -420,9 +420,9 @@ ECS::Context context2;
 context2.registerComponent<PositionComponent>();
 context2.registerComponent<VelocityComponent>();
 context2.registerComponent<HealthComponent>();
-
-buffer << context; // Serialize the source context into the buffer
-buffer >> context2; // Deserialize the buffer into the destination context
+std::stringstream buffer;
+buffer << context; // Serialise the source context into the buffer
+buffer >> context2; // Deserialise the buffer into the destination context
 
 // Now context2 has all entities and components from context
 ```
