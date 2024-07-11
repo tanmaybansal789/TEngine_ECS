@@ -337,7 +337,7 @@ public:
 So, you want to save and reload your states of the ECS. A pretty common requirement, given that it is quite a nice feature to be able to save your game, for example.
 
 Firstly, make sure that your components have a << and >> (insertion and extraction) operator overloaded. It could look like:
-```
+```cpp
 struct HealthComponent {
     int health;
     friend std::ostream& operator<<(std::ostream& os, const HealthComponent& health) {
@@ -427,8 +427,8 @@ buffer >> context2; // Deserialize the buffer into the destination context
 // Now context2 has all entities and components from context
 ```
 
-However, there is also the option of serialising it to a file and writing that file, using the HELPER::writeContextToFile and HELPER::readContextFromFile functions
-```
+However, there is also the option of serialising it to a file and writing that file, using the HELPER::writeContextToFile and HELPER::readContextFromFile functions:
+```cpp
 HELPER::writeContextToFile(context, "demo.tecs");
 
 ECS::Context context2;
