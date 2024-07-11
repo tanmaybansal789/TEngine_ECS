@@ -123,7 +123,7 @@ This creates the Signature (```using Signature = std::bitset<MAX_COMPONENTS>```)
 Secondly, you might be wondering about the 0 in context.addSystem(testSystem, 0); // Add the system.
 This is the pipeline index is what allows us to access the very basic multithreading capabilities of the ECS. All systems created on pipeline 0 will run concurrently.
 These pipelines run sequentially, so if I were to create another system on pipeline 1, it would execute afterwards.
-You should use all consecutive pipeline indexes. So, for example, if I have used pipeline 1, and pipeline 5, I should have also used pipelines 2, 3, and 4.
+You should use all consecutive pipeline indexes from 0. So, for example, if I have used pipeline 5, I should have also used pipelines 0, 1, 2, 3, and 4 at least once. They are run using std::async
 
 Then to update all the systems:
 
