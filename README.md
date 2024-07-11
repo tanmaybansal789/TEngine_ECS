@@ -275,6 +275,14 @@ explicit TestSystem(ECS::Context& context) : System(context, HELPER::createSigna
 ```
 This means that you easily create multiple subscribers to the event without re-adding the event.
 
+Finally, you can update the context's events like so:
+
+```cpp
+context.updateEvents
+```
+
+This will trigger any events whose conditions are ```true``` at that point.
+
 Ok, so that is events - it can sometimes be helpful to allow for communication between systems.
 
 <h3> Tags </h3>
