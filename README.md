@@ -278,7 +278,7 @@ This means that you easily create multiple subscribers to the event without re-a
 Finally, you can update the context's events like so:
 
 ```cpp
-context.updateEvents
+context.updateEvents()
 ```
 
 This will trigger any events whose conditions are ```true``` at that point.
